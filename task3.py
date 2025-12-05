@@ -17,8 +17,8 @@ def task3_page():
     st.subheader("Predicting the reviews of future readers of The Piano Lesson.")
     st.text("Findings")
     
-    X =['reviews']
-    Y =['rating'].astype(int)
+    X =goodreads_thepianolesson['Review Context']
+    Y =goodreads_thepianolesson['Rating'].astype(int)
     
     X_train, X_test, Y_train, Y_test = train_test_split(
         X,Y, test_size=0.2, random_state=42
@@ -32,7 +32,15 @@ def task3_page():
     # Predictions
     pipeline.fit(X_train, Y_train)
     predictions = pipeline.predict(X_test)
+    st.subheader("Predictions For Rating")
+    st.text(predictions)
     
     # Accuracy & Accuracy Scores
-    print("Acucuracy:", accuracy_score(Y_test, predictions))
-    print(classification_report(Y_test, predictions))
+    accuracy =  accuracy_score(Y_test, predictions)
+    st.subheader("Accuarcy Ratings")
+    st.metric("Accuarcy:",f"{accuracy:.2f}")
+    
+    # Random Forest Classification Reports
+    randomForest = classification_report(Y_test, predictions)
+    st.subheader("Random Forest Classifer Report")
+    st.code(classification_report)
